@@ -32,5 +32,5 @@ class Project(models.Model):
         ordering = ['-pub_date']
 
     def __str__(self):
-        return f'Project: {self.project_name}, author: {self.project_owner}'
+        return f'Project: {self.project_name}'
 
