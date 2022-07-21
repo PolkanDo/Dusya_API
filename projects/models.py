@@ -3,6 +3,12 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 User = get_user_model()
+"""
+!!!
+Изменить отображение type field, project author и project executor.
+добавить комментарии и авторизацию.
+!!!
+"""
 
 
 class ProjectType(models.Model):
