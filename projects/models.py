@@ -5,13 +5,20 @@ from django.db import models
 User = get_user_model()
 
 
+class ProjectType(models.Model):
+    type = models.CharField(
+        max_length=250, verbose_name="Project Name", unique=True
+    )
+
+
 class Project(models.Model):
     merchant_id = models.IntegerField(
         blank=False, null=False,
         validators=[MinValueValidator(1), MaxValueValidator(10000000)],
     )
-    project_type = models.CharField(
-        max_length=250, verbose_name="Project Name", unique=True
+    project_type = models.ForeignKey(
+        ProjectType, on_delete=models.SET_NULL, verbose_name='Project Type',
+        related_name='types', null=True
     )
     project_author = models.ForeignKey(
         User, on_delete=models.SET_NULL, verbose_name='Project Author',

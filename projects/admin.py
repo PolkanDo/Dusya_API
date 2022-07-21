@@ -3,6 +3,14 @@ from django.contrib import admin
 from . import models
 
 
+@admin.register(models.ProjectType)
+class ProjectTypeAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'type',
+    ]
+
+
 @admin.register(models.Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = [
