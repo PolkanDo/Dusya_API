@@ -24,7 +24,7 @@ class Project(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Project Author',
-        related_name='projects',
+        related_name='authors',
     )
     project_start_date = models.DateTimeField(
         auto_now_add=True,
@@ -39,7 +39,7 @@ class Project(models.Model):
         User,
         on_delete=models.SET_NULL,
         verbose_name='Project Executor',
-        related_name='projects',
+        related_name='executors',
         null=True,
     )
     project_description = models.CharField(
