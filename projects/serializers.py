@@ -7,8 +7,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = (
             'id',
-            'project_name',
-            'project_owner',
-            'project_field',
-            'project_pub_date',
+            'project_type',
+            'project_author',
+            'project_start_date',
+            'project_completion_date',
+            'project_executor',
         )
