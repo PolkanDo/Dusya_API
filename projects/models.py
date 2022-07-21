@@ -28,7 +28,7 @@ class Project(models.Model):
         auto_now_add=True, db_index=True, verbose_name='Publication_date'
     )
     project_completion_date = models.DateTimeField(
-        db_index=True, verbose_name='Completion date', null=True,
+        db_index=True, verbose_name='Completion date', null=True, blank=True
     )
     project_executor = models.ForeignKey(
         User, on_delete=models.SET_NULL, verbose_name='Project Executor',
