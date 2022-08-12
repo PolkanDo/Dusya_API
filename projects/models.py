@@ -1,12 +1,11 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.db import models
 
-User = get_user_model()
 """
 !!!
 Изменить отображение type field, project author и project executor.
-добавить комментарии и авторизацию.
+добавить комментарии.
 !!!
 """
 
@@ -27,8 +26,9 @@ class Project(models.Model):
         related_name='types', null=True
     )
     project_author = models.ForeignKey(
-        User, on_delete=models.SET_NULL, verbose_name='Project Author',
-        related_name='authors_projects', null=True
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+        verbose_name='Project Author', related_name='authors_projects',
+        null=True
     )
     project_start_date = models.DateTimeField(
         auto_now_add=True, db_index=True, verbose_name='Publication_date'
@@ -37,8 +37,9 @@ class Project(models.Model):
         db_index=True, verbose_name='Completion date', null=True, blank=True
     )
     project_executor = models.ForeignKey(
-        User, on_delete=models.SET_NULL, verbose_name='Project Executor',
-        related_name='executors_projects', null=True,
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+        verbose_name='Project Executor', related_name='executors_projects',
+        null=True,
     )
     project_description = models.CharField(
         max_length=1000, verbose_name="Project Description", blank=False,
