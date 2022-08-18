@@ -19,8 +19,19 @@ class CustomAccountManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, email, first_name, last_name, password):
-        pass
+    def create_superuser(self, email, first_name, last_name,
+                         password, **other_fields):
+        other_fields.setdefault("is_staff", True)
+        other_fields.setdefault("is_superuser", True)
+        other_fields.setdefault("is_active", True)
+
+        if other_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must be assigned to is_staff=True")
+        if other_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must be assigned to is_superuser=True")
+
+        return self.create_user(email, first_name, last_name,
+                                password, **other_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -36,14 +47,16 @@ class User(AbstractBaseUser, PermissionsMixin):
                                     'is already registered ')})
     first_name = models.CharField(_('First name'), max_length=150)
     last_name = models.CharField(_('Last name'), max_length=150)
-    role = models.CharField(max_length=1, choices=ROLES)
+    role = models.CharField(max_length=50, choices=ROLES)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = CustomAccountManager()
+
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     class Meta:
         ordering = ['-id']
