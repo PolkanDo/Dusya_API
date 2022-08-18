@@ -1,9 +1,29 @@
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, \
+    BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class User(AbstractBaseUser):
+class CustomAccountManager(BaseUserManager):
+
+    def create_user(self, email, first_name, last_name,
+                    password, **other_fields):
+
+        if not email:
+            raise ValueError(_("You must provide an email address."))
+
+        email = self.normalize_email(email)
+        user = self.model(email=email, first_name=first_name,
+                          last_name=last_name, **other_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, email, first_name, last_name, password):
+        pass
+
+
+class User(AbstractBaseUser, PermissionsMixin):
     ROLES = (
         ("Seller", "Менеджер по продажам"),
         ("Head of sales", "Глава отдела продаж"),
@@ -23,7 +43,7 @@ class User(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
     class Meta:
         ordering = ['-id']
